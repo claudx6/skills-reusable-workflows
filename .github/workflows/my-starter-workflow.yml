@@ -16,6 +16,15 @@ jobs:
           echo test, and deploy to your project.
 
   call-reusable-workflow:
-    uses: ./.github/workflows/reusable-workflow.yml
-    with:
-      node: 14
+    strategy:
+      matrix:
+        nodeversion: [14, 16, 18, 20]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Call Reusable Workflow
+        uses: ./.github/workflows/reusable-workflow.yml
+        with:
+          node: ${{ matrix.nodeversion }}
